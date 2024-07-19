@@ -12,5 +12,7 @@ namespace School_DAL.Model
         public string Teacher_Name { get; set; }
 
         public string Teacher_Subject { get; set;}
+
+        public string password { get; set; }
     }
 }

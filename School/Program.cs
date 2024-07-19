@@ -1,4 +1,7 @@
 
+using School_BL.Database;
+using School_DAL.Model;
+
 namespace School
 {
     public class Program
@@ -15,6 +18,11 @@ namespace School
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
+
+            Create_Migration obj = new Create_Migration("Server=DESKTOP-MDKBS0M;port=3306;Database=sample_db;User=root;Password=userpass;");
+            obj.Start_Migration();
+
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
