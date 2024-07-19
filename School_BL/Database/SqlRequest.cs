@@ -21,7 +21,7 @@ namespace School_BL.Database
             {
 
             IEnumerable<T> TableDatas;
-            string sql = $"SELECT * FROM {typeof(T)}";
+            string sql = $"SELECT * FROM {typeof(T).Name}";
             TableDatas = _connection.Query<T>(sql);
             return TableDatas; 
             }
@@ -31,26 +31,39 @@ namespace School_BL.Database
         {
             using(_connection)
             {
-                string sql = $"INSERT INTO {typeof(T).Name}({GetColumns<T>()}) VALUES(@{GetPropValues<T>()})";
+                List<string> protypes = GetPropList<T>();
+                protypes.RemoveAt(0);
+                string sql = $"INSERT INTO {typeof(T).Name}({string.Join(",",protypes)}) VALUES(@{string.Join(",@",protypes)})";
                 Console.WriteLine(sql);
                 _connection.Execute(sql, data);
             }
         }
 
-        public string GetColumns<T>()
-        {
-            var type = typeof(T);
-            var typeProps = type.GetProperties().Select(e=> e.Name).ToList();
-            typeProps.RemoveAt(0);
-            return string.Join(", ", typeProps);
-        }
-
-        public string GetPropValues<T>()
+        public List<string> GetPropList<T>()
         {
             var type = typeof(T);
             var typeProps = type.GetProperties().Select(e => e.Name).ToList();
-            typeProps.RemoveAt(0);
-            return string.Join(" ,@",typeProps);
+            return typeProps;
+        }
+        public T GetbyId(int id)
+        {
+            using (_connection)
+            {
+                var protypes = GetPropList<T>();
+                string sql = $"select * from {typeof(T).Name} where {protypes[0]}={id}";
+                T data =  _connection.QueryFirstOrDefault<T>(sql);
+                return data;
+            }
+        }
+        public void DeleteId(int id)
+        {
+            using (_connection)
+            {
+                var protypes = GetPropList<T>();
+                string sql = $"delete from  {typeof(T).Name} where {protypes[0]}={id}";
+                _connection.Execute(sql);
+
+            }    
         }
     }
 }

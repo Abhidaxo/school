@@ -4,8 +4,8 @@ using School_DAL.Model;
 
 namespace School.Controllers
 {
-    [Route("/")]
-    [Controller]
+    [Route("api/[controller]")]
+    [ApiController]
     public class UserRequest : Controller
     {
         private readonly string _connectionString;
