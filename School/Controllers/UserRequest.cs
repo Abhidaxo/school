@@ -8,6 +8,11 @@ namespace School.Controllers
     [ApiController]
     public class UserRequest : Controller
     {
+        //SqlRequest<T> _sqlreq;
+
+        IConfiguration _Configuration;
+
+
         private readonly string _connectionString;
 
         public UserRequest(IConfiguration configuration)
