@@ -32,8 +32,11 @@ namespace School.Controllers
         {
             Teacher teacher=new Teacher();
             teacher.Teacher_Name=Teacher_name;
+
+           
             teacher.password=password;
             return Ok();
+
         }
     }
 }

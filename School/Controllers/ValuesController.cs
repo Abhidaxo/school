@@ -63,13 +63,40 @@ namespace School.Controllers
             return Ok(data);
         }
 
+        [HttpGet("class/{id}")]
+
+        public IActionResult GetClassById(int id)
+        {
+            SqlRequest<Class> get = new SqlRequest<Class>(_connectionString);
+            var data = get.GetbyId(id);
+            return Ok(data);
+        }
         [HttpDelete("Teacher/{id}")]         
         
-        public IActionResult DeleteById(int id)
+        public IActionResult DeleteTeacherById(int id)
         {
             SqlRequest<Teacher> get = new SqlRequest<Teacher>(_connectionString);
             get.DeleteId(id);
             return Ok();
+        }
+
+        [HttpDelete("Student/{id}")]
+
+        public IActionResult DeleteStudentById(int id)
+        {
+            SqlRequest<Student> get = new SqlRequest<Student>(_connectionString);
+            get.DeleteId(id);
+            return Ok();
+
+        }
+
+        [HttpDelete("class/{id}")]
+
+        public IActionResult DelectClassById(int id)
+        {
+            SqlRequest<Class> get = new SqlRequest<Class>(_connectionString);
+            get.DeleteId(id);
+            return Ok();    
         }
     }
 }

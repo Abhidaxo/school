@@ -22,6 +22,14 @@ namespace School_BL.Database
                 .WithColumn("class_Id").AsInt64().PrimaryKey().Identity()
                 .WithColumn("Class_name").AsString(100);
 
+            //Create.Table("StudentClass")
+            //    .WithColumn("student_class_Id").AsInt32().ForeignKey(CL).Identity()
+            //    .WithColumn("Roll_No").AsInt64()
+            //    .WithColumn("Class").AsInt64();
+
+            //Create.Table("teacherClass")
+            //    .WithColumn("Teacher_class_Id").AsInt64().
+
         }
 
         public override void Down()
@@ -32,4 +40,5 @@ namespace School_BL.Database
 
         }
     }
+   
 }
