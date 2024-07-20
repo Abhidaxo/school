@@ -10,10 +10,10 @@ namespace School.Controllers
     [ApiController]
     public class Student_controller : ControllerBase
     {
-        private readonly string _connectionString;
-        public Student_controller(IConfiguration configuration)
+        IGenericRepositoryService<Student> _StudentService;
+        public Student_controller(IGenericRepositoryService<Student> studentService) 
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _StudentService = studentService;
         }
 
         [HttpPost("Student")]
@@ -22,37 +22,25 @@ namespace School.Controllers
             Student student = new Student();
             student.Student_Name = Name;
             student.Student_Place = place;
-
-            SqlRequest<Student> newstudent = new SqlRequest<Student>(_connectionString);
-            newstudent.Save(student);
-            return Ok();
+            return Ok(_StudentService.Add(student));
         }
 
         [HttpGet("student")]
-
         public IActionResult GetStudent()
         {
-            SqlRequest<Student> req = new SqlRequest<Student>(_connectionString);
-            IEnumerable<Student> students = req.GetAll();
-            return Ok(students);
+            return Ok(_StudentService.GetAll());
         }
 
         [HttpGet("student/{id}")]
-
         public IActionResult GetByIdStudent(int id)
         {
-            SqlRequest<Student> req = new SqlRequest<Student>(_connectionString);
-            var data = req.GetbyId(id);
-            return Ok(data);
+            return Ok(_StudentService.GetById(id));
         }
 
         [HttpDelete("student/{id}")]
-
         public IActionResult DeleteByIdStudent(int id)
         {
-            SqlRequest<Student> req = new SqlRequest<Student>(_connectionString);
-            req.DeleteId(id);
-            return Ok();
+            return Ok(_StudentService.Delete(id));
         }
     }
 }

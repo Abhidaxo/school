@@ -9,50 +9,37 @@ namespace School.Controllers
     [ApiController]
     public class Teacher_controller : ControllerBase
     {
-        private readonly string _connectionstring;
-
-        public Teacher_controller(IConfiguration configuration)
+        IGenericRepositoryService<Teacher> _teacherService;
+        public Teacher_controller(IGenericRepositoryService<Teacher> teacherService)
         {
-            _connectionstring = configuration.GetConnectionString("defaultConnection");
+            _teacherService = teacherService;
         }
 
         [HttpPost]
-
         public IActionResult AddTecher(string name,string subject)
         {
             Teacher teacher = new Teacher();
             teacher.Teacher_Name = name;
             teacher.Teacher_Subject = subject;
-
-            SqlRequest<Teacher> newteacher = new SqlRequest<Teacher>(_connectionstring);
-            newteacher.Save(teacher);
-            return Ok();
+            return Ok(_teacherService.Add(teacher));
         }
 
         [HttpGet] 
         public IActionResult GetTecher()
         {
-            SqlRequest<Teacher> req = new SqlRequest<Teacher>(_connectionstring);
-            IEnumerable<Teacher> teachers = req.GetAll();
-            return Ok(teachers);    
+            return Ok(_teacherService.GetAll());    
         }
 
         [HttpGet("teacher/{id}")]
         public IActionResult GetTecherById(int id)
         {
-            SqlRequest<Teacher> req = new SqlRequest<Teacher>(_connectionstring);
-            var data = req.GetAll();
-            return Ok(data);
+            return Ok(_teacherService.GetById(id));
         }
 
         [HttpDelete("teacher/{id}")]
-
         public IActionResult DeleteGetById(int id)
         {
-            SqlRequest<Teacher> req = new SqlRequest<Teacher>(_connectionstring);
-            req.DeleteId(id);
-            return Ok();
-
+            return Ok(_teacherService.Delete(id));
         }
 
 
