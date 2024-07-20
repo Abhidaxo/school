@@ -1,4 +1,5 @@
 ﻿using FluentMigrator;
+using School_DAL.Model;
 
 namespace School_BL.Database
 {
@@ -23,12 +24,14 @@ namespace School_BL.Database
                 .WithColumn("Class_name").AsString(100);
 
             //Create.Table("StudentClass")
-            //    .WithColumn("student_class_Id").AsInt32().ForeignKey(CL).Identity()
+            //    .WithColumn("student_class_Id").AsInt32().ForeignKey().Identity()
             //    .WithColumn("Roll_No").AsInt64()
             //    .WithColumn("Class").AsInt64();
 
             //Create.Table("teacherClass")
-            //    .WithColumn("Teacher_class_Id").AsInt64().
+            //    .WithColumn("Teacher_class_Id").AsInt64().ForeignKey().Identity()
+            //    .WithColumn("Teacher_Id").AsInt64()
+            //    .WithColumn("Class_Id").AsInt64();
 
         }
 
