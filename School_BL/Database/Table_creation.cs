@@ -3,7 +3,7 @@ using School_DAL.Model;
 
 namespace School_BL.Database
 {
-    [Migration(20240719421)]
+    [Migration(20240719422)]
     public class AddTable : Migration
     {
         public override void Up()

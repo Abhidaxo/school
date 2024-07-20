@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using School_BL.Database;
+using School_BL.Services;
 using School_DAL.Model;
 
 namespace School.Controllers
@@ -8,17 +9,15 @@ namespace School.Controllers
     [ApiController]
     public class UserRequest : Controller
     {
-        //SqlRequest<T> _sqlreq;
-
-        IConfiguration _Configuration;
-
+        IGenericRepositoryService<Teacher> _teacherService;
 
         private readonly string _connectionString;
 
-        public UserRequest(IConfiguration configuration)
+        public UserRequest(IGenericRepositoryService<Teacher> teacherService)
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _teacherService = teacherService;
         }
+
         [HttpPost("signup")]
         public IActionResult SignUp(string Teacher_name,string Subject,string password)
         {
@@ -26,10 +25,8 @@ namespace School.Controllers
             teacher.Teacher_Name = Teacher_name;
             teacher.Teacher_Subject = Subject;
             teacher.password = password;
-            SqlRequest<Teacher> NewTeacher = new SqlRequest<Teacher>(_connectionString);
-            NewTeacher.Save(teacher);
 
-            return Ok();
+            return Ok(_teacherService.Add(teacher));
         }
 
         [HttpPost("login")]
@@ -37,8 +34,6 @@ namespace School.Controllers
         {
             Teacher teacher=new Teacher();
             teacher.Teacher_Name=Teacher_name;
-
-           
             teacher.password=password;
             return Ok();
 
