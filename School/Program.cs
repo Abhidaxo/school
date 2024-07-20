@@ -1,5 +1,8 @@
 
+using FirebirdSql.Data.Services;
 using School_BL.Database;
+using School_BL.Repositories;
+using School_BL.Services;
 using School_DAL.Model;
 
 namespace School
@@ -16,6 +19,28 @@ namespace School
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddScoped<IGenericRepositoryService<Student>>(provider =>
+            { 
+                var configuration = provider.GetRequiredService<IConfiguration>();
+                var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+                return new StudentService(connectionString);
+            });
+            builder.Services.AddScoped<IGenericRepositoryService<Teacher>>(provider =>
+            {
+                var configuration = provider.GetRequiredService<IConfiguration>();
+                var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+                return new TeacherService(connectionString);
+            });
+            builder.Services.AddScoped<IGenericRepositoryService<Class>>(provider =>
+            {
+                var configuration = provider.GetRequiredService<IConfiguration>();
+                var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+                return new ClassService(connectionString);
+            });
 
             var app = builder.Build();
 
