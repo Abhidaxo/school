@@ -1,15 +1,17 @@
-﻿using School_BL.Database;
+﻿using Microsoft.Extensions.Configuration;
+using School_BL.Database;
 using School_BL.Repositories;
 using School_DAL.Model;
+using System.Configuration;
 
 namespace School_BL.Services
 {
     public class TeacherService : IGenericRepositoryService<Teacher>
     {
         private readonly string _ConnectionString;
-        public TeacherService(string ConnectionString)
+        public TeacherService(IConfiguration configuration)
         {
-            _ConnectionString = ConnectionString;
+            _ConnectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
         public List<Teacher> GetAll()

@@ -20,27 +20,9 @@ namespace School
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddScoped<IGenericRepositoryService<Student>>(provider =>
-            { 
-                var configuration = provider.GetRequiredService<IConfiguration>();
-                var connectionString = configuration.GetConnectionString("DefaultConnection");
-
-                return new StudentService(connectionString);
-            });
-            builder.Services.AddScoped<IGenericRepositoryService<Teacher>>(provider =>
-            {
-                var configuration = provider.GetRequiredService<IConfiguration>();
-                var connectionString = configuration.GetConnectionString("DefaultConnection");
-
-                return new TeacherService(connectionString);
-            });
-            builder.Services.AddScoped<IGenericRepositoryService<Class>>(provider =>
-            {
-                var configuration = provider.GetRequiredService<IConfiguration>();
-                var connectionString = configuration.GetConnectionString("DefaultConnection");
-
-                return new ClassService(connectionString);
-            });
+            builder.Services.AddScoped<IGenericRepositoryService<Student>,StudentService>();
+            builder.Services.AddScoped<IGenericRepositoryService<Teacher>,TeacherService>();
+            builder.Services.AddScoped<IGenericRepositoryService<Class>,ClassService>();
 
             var app = builder.Build();
 
