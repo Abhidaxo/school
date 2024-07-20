@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.Extensions.Configuration;
 using School_BL.Database;
 using School_BL.Repositories;
 using School_DAL.Model;
@@ -8,9 +9,9 @@ namespace School_BL.Services
     public class StudentService : IGenericRepositoryService<Student>
     {
         private readonly string _ConnectionString;
-        public StudentService(string ConnectionString) 
+        public StudentService(IConfiguration configuration) 
         {
-            _ConnectionString = ConnectionString;
+            _ConnectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
         public List<Student> GetAll()
