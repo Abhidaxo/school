@@ -15,6 +15,7 @@ namespace School_BL.Database
         {
 
         }
+
         public IEnumerable<T> GetAll()
         {
             using(_connection)
@@ -27,43 +28,80 @@ namespace School_BL.Database
             }
         }
 
-        public void Save(T data)
+        public bool Save(T data)
         {
             using(_connection)
             {
-                List<string> protypes = GetPropList<T>();
-                protypes.RemoveAt(0);
-                string sql = $"INSERT INTO {typeof(T).Name}({string.Join(",",protypes)}) VALUES(@{string.Join(",@",protypes)})";
+                string sql = $"INSERT INTO {getTableName()}({getColums()}) VALUES(@{getColumsPros()})";
                 Console.WriteLine(sql);
-                _connection.Execute(sql, data);
+                try
+                {
+                    _connection.Execute(sql, data);
+                    return true;
+                }catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
             }
         }
 
-        public List<string> GetPropList<T>()
+        public T GetbyId(int id)
+        {
+            using (_connection)
+            {
+                var protypes = GetPropList();
+                string sql = $"select * from {getTableName()} where {protypes[0]}={id}";
+                T data =  _connection.QueryFirstOrDefault<T>(sql);
+                return data;
+            }
+        }
+
+        public bool DeleteId(int id)
+        {
+            using (_connection)
+            {
+                var protypes = GetPropList();
+                string sql = $"delete from  {getTableName()} where {protypes[0]}={id}";
+                try
+                {
+                    _connection.Execute(sql);
+                    return true;
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
+
+            }    
+        }
+
+        public string getTableName()
+        {
+            return typeof(T).Name;
+        }
+
+        public List<string> GetPropList()
         {
             var type = typeof(T);
             var typeProps = type.GetProperties().Select(e => e.Name).ToList();
             return typeProps;
         }
-        public T GetbyId(int id)
-        {
-            using (_connection)
-            {
-                var protypes = GetPropList<T>();
-                string sql = $"select * from {typeof(T).Name} where {protypes[0]}={id}";
-                T data =  _connection.QueryFirstOrDefault<T>(sql);
-                return data;
-            }
-        }
-        public void DeleteId(int id)
-        {
-            using (_connection)
-            {
-                var protypes = GetPropList<T>();
-                string sql = $"delete from  {typeof(T).Name} where {protypes[0]}={id}";
-                _connection.Execute(sql);
 
-            }    
+        public string getColums()
+        {
+            List<string> columns = GetPropList();
+            columns.RemoveAt(0);
+            return string.Join(",", columns);
         }
+
+        public string getColumsPros()
+        {
+            List<string> columsProps = GetPropList();
+            columsProps.RemoveAt(0);
+            return string.Join(",@", columsProps);
+        }
+
     }
 }

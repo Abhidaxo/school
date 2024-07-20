@@ -19,8 +19,8 @@ namespace School
 
             var app = builder.Build();
 
-            Create_Migration obj = new Create_Migration("Server=DESKTOP-MDKBS0M;port=3306;Database=sample_db;User=root;Password=userpass;");
-            obj.Start_Migration();
+            //Create_Migration obj = new Create_Migration("Server=DESKTOP-MDKBS0M;port=3306;Database=sample_db;User=root;Password=userpass;");
+            //obj.Start_Migration();
 
 
 
