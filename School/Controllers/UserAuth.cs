@@ -30,7 +30,7 @@ namespace School.Controllers
                 var Sectoken = new JwtSecurityToken(configuration["Jwt:Issuer"],
                   configuration["Jwt:Audience"],
                   null,
-                  expires: DateTime.UtcNow.AddMinutes(3),
+                  expires: DateTime.UtcNow.AddMinutes(1),
                   signingCredentials: credentials);
 
                 var token = new JwtSecurityTokenHandler().WriteToken(Sectoken);

@@ -36,8 +36,11 @@ namespace School_DAL.Database
                 Console.WriteLine(sql);
                 try
                 {
-                    _connection.Execute(sql, data);
-                    return true;
+                    int effecteRows = _connection.Execute(sql, data);
+                    if (effecteRows > 0)
+                        return true;
+                    else
+                        return false;
                 }catch(Exception ex)
                 {
                     Console.WriteLine(ex.Message);
@@ -65,8 +68,11 @@ namespace School_DAL.Database
                 string sql = $"delete from  {getTableName()} where {protypes[0]}={id}";
                 try
                 {
-                    _connection.Execute(sql);
+                    int effectedRows = _connection.Execute(sql);
+                    if(effectedRows > 0) 
                     return true;
+                    else
+                        return false;
                 }
                 catch(Exception ex)
                 {

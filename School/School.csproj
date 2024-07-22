@@ -16,8 +16,4 @@
     <ProjectReference Include="..\School_BL\School_BL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Middleware\" />
-  </ItemGroup>
-
 </Project>

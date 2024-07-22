@@ -7,6 +7,7 @@ using School_BL.Repositories;
 using School_BL.Services;
 using School_DAL.Model;
 using System.Text;
+using School.Middleware;
 
 namespace School
 {
@@ -31,7 +32,6 @@ namespace School
             builder.Services.AddScoped<UserAuthService>();
             builder.Services.AddScoped<StudentDetailsService>();
 
-
             //JWT Token
             var jwtIssuer = builder.Configuration.GetSection("Jwt:Issuer").Get<string>();
             var jwtAudience = builder.Configuration.GetSection("Jwt:Audience").Get<string>();
@@ -53,12 +53,15 @@ namespace School
              });
             
 
+
+
             var app = builder.Build();
 
             Create_Migration obj = new Create_Migration("Server=DESKTOP-MDKBS0M;port=3306;Database=SchoolTestDb;User=root;Password=userpass;");
             obj.Start_Migration();
 
-
+          //  app.UseMiddleware<loggerMiddleware>();
+            app.UseMiddleware<JWTokenmiddleware>();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -66,7 +69,7 @@ namespace School
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+          
             app.UseHttpsRedirection();
 
             app.UseAuthentication();
