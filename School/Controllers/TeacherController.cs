@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using School_BL.Database;
+using School_DAL.Database;
 using School_DAL.Model;
 
 namespace School.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TeacherController : ControllerBase
@@ -21,7 +23,7 @@ namespace School.Controllers
             Teacher teacher = new Teacher();
             teacher.Teacher_Name = name;
             teacher.Teacher_Subject = subject;
-            return Ok(_teacherService.Add(teacher));
+            return Ok(new{ Success= _teacherService.Add(teacher),data=teacher});
         }
 
         [HttpGet] 

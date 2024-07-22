@@ -6,12 +6,12 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace School_BL.Database
+namespace School_DAL.Database
 {
-    public class SqlRequest<T> : connect
+    public class GenricSqlRequest<T> : connect
     {
        
-        public SqlRequest(string ConnectionString) : base(ConnectionString)
+        public GenricSqlRequest(string ConnectionString) : base(ConnectionString)
         {
 
         }

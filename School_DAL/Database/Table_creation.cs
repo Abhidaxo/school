@@ -1,7 +1,7 @@
 ﻿using FluentMigrator;
 using School_DAL.Model;
 
-namespace School_BL.Database
+namespace School_DAL.Database
 {
     [Migration(202407221157)]
     public class AddTable : Migration

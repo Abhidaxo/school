@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using School_BL.Database;
+using School_DAL.Database;
 using School_DAL.Model;
 
 namespace School.Controllers

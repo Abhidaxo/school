@@ -1,4 +1,4 @@
-﻿using School_BL.Database;
+﻿using School_DAL.Database;
 using School_DAL.Model;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace School_BL.Repositories
 {
-    public class StudentClassRepository : SqlRequest<StudentClass>
+    public class StudentClassRepository : GenricSqlRequest<StudentClass>
     {
         public StudentClassRepository(string ConnectionString): base(ConnectionString) { }
     }

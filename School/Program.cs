@@ -1,9 +1,12 @@
 
 using FirebirdSql.Data.Services;
-using School_BL.Database;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using School_DAL.Database;
 using School_BL.Repositories;
 using School_BL.Services;
 using School_DAL.Model;
+using System.Text;
 
 namespace School
 {
@@ -25,6 +28,30 @@ namespace School
             builder.Services.AddScoped<IGenericRepositoryService<Class>,ClassService>();
             builder.Services.AddScoped<IGenericRepositoryService<StudentClass>,StudentClassService>();
             builder.Services.AddScoped<IGenericRepositoryService<TeacherClass>,TeacherClassService>();
+            builder.Services.AddScoped<UserAuthService>();
+            builder.Services.AddScoped<StudentDetailsService>();
+
+
+            //JWT Token
+            var jwtIssuer = builder.Configuration.GetSection("Jwt:Issuer").Get<string>();
+            var jwtAudience = builder.Configuration.GetSection("Jwt:Audience").Get<string>();
+            var jwtKey = builder.Configuration.GetSection("Jwt:Key").Get<string>();
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+             .AddJwtBearer(options =>
+             {
+                 options.TokenValidationParameters = new TokenValidationParameters
+                 {
+                     ValidateIssuer = true,
+                     ValidateAudience = true,
+                     ValidateLifetime = true,
+                     ValidateIssuerSigningKey = true,
+                     ValidIssuer = jwtIssuer,
+                     ValidAudience = jwtAudience,
+                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+                 };
+             });
+            
 
             var app = builder.Build();
 
@@ -42,6 +69,7 @@ namespace School
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

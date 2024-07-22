@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using School_BL.Database;
+using School_DAL.Database;
 using School_BL.Repositories;
 using School_DAL.Model;
 using System.Configuration;
