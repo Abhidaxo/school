@@ -7,10 +7,10 @@ namespace School.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class Teacher_controller : ControllerBase
+    public class TeacherController : ControllerBase
     {
         IGenericRepositoryService<Teacher> _teacherService;
-        public Teacher_controller(IGenericRepositoryService<Teacher> teacherService)
+        public TeacherController(IGenericRepositoryService<Teacher> teacherService)
         {
             _teacherService = teacherService;
         }

@@ -6,11 +6,11 @@ namespace School.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class Class_controller : ControllerBase
+    public class ClassController : ControllerBase
     {
         IGenericRepositoryService<Class> _classService;
 
-        public Class_controller(IGenericRepositoryService<Class> classService)
+        public ClassController(IGenericRepositoryService<Class> classService)
         {
             _classService = classService;
         }

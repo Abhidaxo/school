@@ -3,7 +3,7 @@ using School_DAL.Model;
 
 namespace School_BL.Database
 {
-    [Migration(20240719422)]
+    [Migration(202407221157)]
     public class AddTable : Migration
     {
         public override void Up()
@@ -16,22 +16,29 @@ namespace School_BL.Database
             Create.Table("Teacher")
                .WithColumn("Teacher_Id").AsInt64().PrimaryKey().Identity()
                .WithColumn("Teacher_Name").AsString(100)
-               .WithColumn("Teacher_Subject").AsString(100)
-               .WithColumn("password").AsString(100);
+               .WithColumn("Teacher_Subject").AsString(100);
+             
 
             Create.Table("Class")
                 .WithColumn("class_Id").AsInt64().PrimaryKey().Identity()
                 .WithColumn("Class_name").AsString(100);
 
             Create.Table("StudentClass")
-                .WithColumn("student_class_Id").AsInt32().PrimaryKey().Identity()
+                .WithColumn("StudentClass_Id").AsInt32().PrimaryKey().Identity()
                 .WithColumn("Roll_No").AsInt64()
                 .WithColumn("Class_Id").AsInt64();
 
             Create.Table("TeacherClass")
-                .WithColumn("Teacher_class_Id").AsInt64().ForeignKey().Identity()
+                .WithColumn("TeacherClass_Id").AsInt64().PrimaryKey().Identity()
                 .WithColumn("Teacher_Id").AsInt64()
                 .WithColumn("Class_Id").AsInt64();
+
+            Create.Table("Admin")
+                .WithColumn("Admin_Id").AsString(100).PrimaryKey()
+                .WithColumn("Password").AsString(100);
+
+            Insert.IntoTable("Admin").Row(new { Admin_Id = new NonUnicodeString("admin"), password = new NonUnicodeString("pass") });
+
 
             Create.ForeignKey("FK_TeacherClass_Teacher_Teacher_Id")
                 .FromTable("TeacherClass").ForeignColumn("Teacher_Id")
@@ -58,9 +65,11 @@ namespace School_BL.Database
             Delete.Table("Class");
             Delete.Table("StudentClass");
             Delete.Table("TeacherClass");
+            Delete.Table("Admin");
 
 
-            // Delete foreign keys first
+
+           // Delete foreign keys first
             Delete.ForeignKey("FK_TeacherClass_Teacher_Teacher_Id").OnTable("TeacherClass");
             Delete.ForeignKey("FK_TeacherClass_Class_Class_Id").OnTable("TeacherClass");
             Delete.ForeignKey("FK_StudentClass_Student_Roll_No").OnTable("StudentClass");
