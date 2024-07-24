@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using School_BL.GeniricInterface;
 using School_DAL.Database;
 using School_DAL.Model;
+using School_BL.Services;
 
 namespace School.Controllers
 {
@@ -11,8 +12,8 @@ namespace School.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        IStudent _StudentService;
-        public StudentController(IStudent studentService) 
+        StudentService _StudentService;
+        public StudentController(StudentService studentService) 
         {
             _StudentService = studentService;
         }

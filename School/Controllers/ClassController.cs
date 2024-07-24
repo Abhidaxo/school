@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using School_BL.GeniricInterface;
+using School_BL.Services;
 using School_DAL.Database;
 using School_DAL.Model;
 
@@ -9,9 +10,9 @@ namespace School.Controllers
     [ApiController]
     public class ClassController : ControllerBase
     {
-        IClass _classService;
+        ClassService _classService;
 
-        public ClassController(IClass classService)
+        public ClassController(ClassService classService)
         {
             _classService = classService;
         }

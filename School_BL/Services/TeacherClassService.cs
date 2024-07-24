@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using School_DAL.Database;
-using School_BL.Repositories;
 using School_DAL.Model;
 using System;
 using System.Collections.Generic;
@@ -11,40 +10,19 @@ using School_BL.GeniricInterface;
 
 namespace School_BL.Services
 {
-    public class TeacherClassService : ITeacherClass
+    public class TeacherClassService : GenricSqlRequest<TeacherClass>
 
     {
 
-        private readonly string _ConnectionString;
+        //private readonly string _ConnectionString;
 
-        public TeacherClassService(IConfiguration configuration)
+        //public GenricSqlRequest<TeacherClass> _TeacherClassReq;
+
+        public TeacherClassService(IConfiguration configuration) : base(configuration.GetConnectionString("Defaultconnection"))
         {
-            _ConnectionString = configuration.GetConnectionString("DefaultConnection");
 
         }
 
-        public List<TeacherClass> GetAll()
-        {
-            TeacherClassRepository repo = new TeacherClassRepository(_ConnectionString);
-            return repo.GetAll().ToList();
-        }
-
-        public TeacherClass GetById(int id)
-        {
-            TeacherClassRepository repo = new TeacherClassRepository(_ConnectionString);
-            return repo.GetbyId(id);
-        }
-
-        public bool Add(TeacherClass clas)
-        {
-            TeacherClassRepository repo = new TeacherClassRepository(_ConnectionString);
-            return repo.Save(clas);
-        }
-
-        public bool Delete(int id)
-        {
-            TeacherClassRepository repo = new TeacherClassRepository(_ConnectionString);
-            return repo.DeleteId(id);
-        }
+     
     }
 }

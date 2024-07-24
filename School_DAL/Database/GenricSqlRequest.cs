@@ -1,4 +1,6 @@
 ﻿using Dapper;
+using Microsoft.Extensions.Configuration;
+using School_DAL.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +15,12 @@ namespace School_DAL.Database
         public string _sql { get; set; }
 
        
-        public GenricSqlRequest(string ConnectionString) : base(ConnectionString)
+        public GenricSqlRequest(string ConnectionString):base(ConnectionString)
         {
-
+           
         }
 
-        public IEnumerable<T> GetAll()
+        public List<T> GetAll()
         {
             using(_connection)
             {
@@ -26,16 +28,16 @@ namespace School_DAL.Database
             IEnumerable<T> TableDatas;
             string sql = $"SELECT * FROM {typeof(T).Name}";
             TableDatas = _connection.Query<T>(sql);
-            return TableDatas; 
+            return TableDatas.ToList<T>(); 
             }
         }
 
-        public bool Save(T data)
+        public bool Add(T data)
         {
             using(_connection)
             {
                 string sql = $"INSERT INTO {getTableName()}({getColums()}) VALUES(@{getColumsPros()})";
-                Console.WriteLine(sql);
+      
                 try
                 {
                     int effecteRows = _connection.Execute(sql, data);
@@ -51,7 +53,7 @@ namespace School_DAL.Database
             }
         }
 
-        public T GetbyId(int id)
+        public T GetById(int id)
         {
             using (_connection)
             {
@@ -62,7 +64,7 @@ namespace School_DAL.Database
             }
         }
 
-        public bool DeleteId(int id)
+        public bool Delete(int id)
         {
             using (_connection)
             {

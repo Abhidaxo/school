@@ -25,11 +25,11 @@ namespace School
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddScoped<IStudent,StudentService>();
-            builder.Services.AddScoped<ITeacher,TeacherService>();
-            builder.Services.AddScoped<IClass,ClassService>();
-            builder.Services.AddScoped<IStudentClass,StudentClassService>();
-            builder.Services.AddScoped<ITeacherClass,TeacherClassService>();
+            builder.Services.AddScoped<StudentService>();
+            builder.Services.AddScoped<TeacherService>();
+            builder.Services.AddScoped<ClassService>();
+            builder.Services.AddScoped<StudentClassService>();
+            builder.Services.AddScoped<TeacherClassService>();
             builder.Services.AddScoped<UserAuthService>();
             builder.Services.AddScoped<StudentDetailsService>();
 

@@ -10,18 +10,17 @@ using System.Threading.Tasks;
 
 namespace School_BL.Services
 {
-    public class UserAuthService
+    public class UserAuthService : GenricSqlRequest<Admin>
     {
         private readonly string _ConnectionString;
-        public UserAuthService(IConfiguration configuration) 
+        public UserAuthService(IConfiguration configuration) : base(configuration.GetConnectionString("Defaultconnection"))
         {
-            _ConnectionString = configuration.GetConnectionString("DefaultConnection");
+            
         }
         public Admin GetUser(string Admin_Id)
         {
-            connect Connection = new connect(_ConnectionString);
             string sql = "select * from Admin where Admin_Id = @Admin_Id";
-            return Connection._connection.QueryFirstOrDefault<Admin>(sql,new { Admin_Id=Admin_Id});
+            return _connection.QueryFirstOrDefault<Admin>(sql,new { Admin_Id=Admin_Id});
         }
     }
 }

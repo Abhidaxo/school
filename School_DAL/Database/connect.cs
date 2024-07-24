@@ -3,12 +3,15 @@ namespace School_DAL.Database
 {
     public class connect
     {
-        public readonly MySqlConnection _connection;
-        public string _ConnectionString { get; set; }
+        public MySqlConnection _connection;
         public connect(string ConnectionString)
         {
-            _ConnectionString = ConnectionString;
-            _connection = new MySqlConnection(_ConnectionString);
+            _connection = new MySqlConnection(ConnectionString);
+        }
+        public MySqlConnection GetConnection()
+        {
+            
+            return _connection;
         }
     }
 }

@@ -1,6 +1,4 @@
 ﻿
-
-using School_DAL.Database;
 using School_DAL.Model;
 
 namespace School_BL.GeniricInterface

@@ -1,6 +1,6 @@
 ﻿
 
-namespace School_DAL.Database
+namespace School_BL.GeniricInterface
 {
 
     public interface IGenericRepositoryService<T>
