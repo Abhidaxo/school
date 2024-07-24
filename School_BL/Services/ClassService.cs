@@ -5,10 +5,11 @@ using School_DAL.Database;
 using School_BL.Repositories;
 using School_DAL.Model;
 using System.Configuration;
+using School_BL.GeniricInterface;
 
 namespace School_BL.Services
 {
-     public class ClassService : IGenericRepositoryService<Class>
+     public class ClassService : IClass
     {
         private readonly string _ConnectionString;
         public ClassService(IConfiguration configuration)

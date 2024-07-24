@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using School_BL.GeniricInterface;
 using School_DAL.Database;
 using School_DAL.Model;
 
@@ -9,8 +10,8 @@ namespace School.Controllers
     [ApiController]
     public class TeacherClassController : ControllerBase
     {
-        IGenericRepositoryService<TeacherClass> _teacherClassService;
-        public TeacherClassController(IGenericRepositoryService<TeacherClass> teacherclassService)
+        ITeacherClass _teacherClassService;
+        public TeacherClassController(ITeacherClass teacherclassService)
         {
             _teacherClassService = teacherclassService;
         }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using School_BL.GeniricInterface;
 using School_DAL.Database;
 using School_DAL.Model;
 
@@ -11,8 +12,8 @@ namespace School.Controllers
     [ApiController]
     public class TeacherController : ControllerBase
     {
-        IGenericRepositoryService<Teacher> _teacherService;
-        public TeacherController(IGenericRepositoryService<Teacher> teacherService)
+        ITeacher _teacherService;
+        public TeacherController(ITeacher teacherService)
         {
             _teacherService = teacherService;
         }

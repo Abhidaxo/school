@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MySql.Data.MySqlClient;
 
-namespace School_DAL.Database
+namespace School_DAL.Migrations
 {
     public class Create_Migration
     {

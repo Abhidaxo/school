@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Connections;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using School_BL.GeniricInterface;
 using School_DAL.Database;
 using School_DAL.Model;
 
@@ -10,8 +11,8 @@ namespace School.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        IGenericRepositoryService<Student> _StudentService;
-        public StudentController(IGenericRepositoryService<Student> studentService) 
+        IStudent _StudentService;
+        public StudentController(IStudent studentService) 
         {
             _StudentService = studentService;
         }

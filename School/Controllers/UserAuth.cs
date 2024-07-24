@@ -15,8 +15,8 @@ namespace School.Controllers
         [HttpPost]
         public IActionResult Login(IConfiguration configuration, UserAuthService userAuth, string Admin_Id,string password)
         {
-            //Admin admin = new Admin();
-            //admin.Admin_Id = Admin_Id;
+            
+            
              Admin admin = userAuth.GetUser(Admin_Id);
             if(admin == null )
             {
@@ -30,7 +30,7 @@ namespace School.Controllers
                 var Sectoken = new JwtSecurityToken(configuration["Jwt:Issuer"],
                   configuration["Jwt:Audience"],
                   null,
-                  expires: DateTime.UtcNow.AddMinutes(1),
+                  expires: DateTime.UtcNow.AddMinutes(3),
                   signingCredentials: credentials);
 
                 var token = new JwtSecurityTokenHandler().WriteToken(Sectoken);

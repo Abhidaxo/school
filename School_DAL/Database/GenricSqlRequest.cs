@@ -10,6 +10,8 @@ namespace School_DAL.Database
 {
     public class GenricSqlRequest<T> : connect
     {
+        public string _sql { get; set; }
+
        
         public GenricSqlRequest(string ConnectionString) : base(ConnectionString)
         {
@@ -81,6 +83,24 @@ namespace School_DAL.Database
                 }
 
             }    
+        }
+
+        public List<T> GetAllDatas(string sql)
+        {
+            using(_connection)
+            {
+                return _connection.Query<T>(sql).ToList();
+
+            }
+
+        }
+
+        public T GetData()
+        {
+            using (_connection)
+            {
+                return _connection.QueryFirstOrDefault<T>(_sql);
+            }
         }
 
         public string getTableName()

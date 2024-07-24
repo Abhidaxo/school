@@ -7,10 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using School_BL.GeniricInterface;
 
 namespace School_BL.Services
 {
-    public class StudentClassService : IGenericRepositoryService<StudentClass>
+    public class StudentClassService : IStudentClass
     {
         private readonly string _ConnectionString;
 

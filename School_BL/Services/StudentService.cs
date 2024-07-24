@@ -3,10 +3,11 @@ using Microsoft.Extensions.Configuration;
 using School_DAL.Database;
 using School_BL.Repositories;
 using School_DAL.Model;
+using School_BL.GeniricInterface;
 
 namespace School_BL.Services
 {
-    public class StudentService : IGenericRepositoryService<Student>
+    public class StudentService : IStudent
     {
         private readonly string _ConnectionString;
         public StudentService(IConfiguration configuration) 
