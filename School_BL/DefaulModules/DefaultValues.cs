@@ -1,4 +1,4 @@
-﻿namespace School.DefaulModules
+﻿namespace School_Bl.DefaulModules
 {
     public static class DefaultValues
     {

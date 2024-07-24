@@ -10,13 +10,10 @@ using School_BL.GeniricInterface;
 
 namespace School_BL.Services
 {
-    public class StudentClassService : GenricSqlRequest<StudentClass>
+    public class StudentClassService : GenricSqlRequest<StudentClass>,IStudentClassService
     {
 
-        //public GenricSqlRequest<StudentClass> _StudentClassReq;
-
-
-        public StudentClassService(IConfiguration configuration) : base(configuration.GetConnectionString("Defaultconnection"))
+        public StudentClassService() 
         {
           
         }

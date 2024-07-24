@@ -12,7 +12,7 @@ namespace School_BL.Services
 {
     public class StudentDetailsService : GenricSqlRequest<dynamic>
     {
-        public StudentDetailsService(IConfiguration configuration) : base(configuration.GetConnectionString("Defaultconnection"))
+        public StudentDetailsService() 
         {
         }
      

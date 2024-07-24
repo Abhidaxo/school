@@ -13,7 +13,7 @@ namespace School_BL.Services
     public class UserAuthService : GenricSqlRequest<Admin>
     {
         private readonly string _ConnectionString;
-        public UserAuthService(IConfiguration configuration) : base(configuration.GetConnectionString("Defaultconnection"))
+        public UserAuthService()
         {
             
         }

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using School.DefaulModules;
+using School_Bl.DefaulModules;
 using School.Middleware;
 using School_BL.GeniricInterface;
 using School_BL.Services;
@@ -25,11 +25,11 @@ namespace School
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddScoped<StudentService>();
-            builder.Services.AddScoped<TeacherService>();
-            builder.Services.AddScoped<ClassService>();
-            builder.Services.AddScoped<StudentClassService>();
-            builder.Services.AddScoped<TeacherClassService>();
+            builder.Services.AddScoped<IStudentService,StudentService>();
+            builder.Services.AddScoped<ITeacherService,TeacherService>();
+            builder.Services.AddScoped<IClassService,ClassService>();
+            builder.Services.AddScoped<IStudentClassService,StudentClassService>();
+            builder.Services.AddScoped<ITeacherClassService,TeacherClassService>();
             builder.Services.AddScoped<UserAuthService>();
             builder.Services.AddScoped<StudentDetailsService>();
 

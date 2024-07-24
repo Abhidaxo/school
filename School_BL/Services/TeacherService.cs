@@ -7,11 +7,10 @@ using School_BL.GeniricInterface;
 namespace School_BL.Services
 {
 
-    public class TeacherService : GenricSqlRequest<Teacher>
+    public class TeacherService : GenricSqlRequest<Teacher>,ITeacherService
     {
-        //private readonly string _ConnectionString;
-        //public GenricSqlRequest<Teacher> _TeacherReq;
-        public TeacherService(IConfiguration configuration) : base(configuration.GetConnectionString("Defaultconnection"))
+       
+        public TeacherService()
         {
 
         }

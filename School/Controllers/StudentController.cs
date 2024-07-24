@@ -12,13 +12,13 @@ namespace School.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        StudentService _StudentService;
-        public StudentController(StudentService studentService) 
+        IStudentService _StudentService;
+        public StudentController(IStudentService studentService) 
         {
             _StudentService = studentService;
         }
 
-        [HttpPost("Student")]
+        [HttpPost("AddStudent")]
         public IActionResult AddStudent(string Name, string place)
         {
             Student student = new Student();
@@ -27,19 +27,19 @@ namespace School.Controllers
             return Ok(_StudentService.Add(student));
         }
 
-        [HttpGet("student")]
+        [HttpGet("GetAllStudent")]
         public IActionResult GetStudent()
         {
             return Ok(_StudentService.GetAll());
         }
 
-        [HttpGet("student/{id}")]
+        [HttpGet("GetByIdStudent/{id}")]
         public IActionResult GetByIdStudent(int id)
         {
             return Ok(_StudentService.GetById(id));
         }
 
-        [HttpDelete("student/{id}")]
+        [HttpDelete("DeleteByIdStudent/{id}")]
         public IActionResult DeleteByIdStudent(int id)
         {
             return Ok(_StudentService.Delete(id));

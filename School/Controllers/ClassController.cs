@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using School.UserData;
 using School_BL.GeniricInterface;
 using School_BL.Services;
 using School_DAL.Database;
@@ -10,14 +11,14 @@ namespace School.Controllers
     [ApiController]
     public class ClassController : ControllerBase
     {
-        ClassService _classService;
+        IClassService _classService;
 
-        public ClassController(ClassService classService)
+        public ClassController(IClassService classService)
         {
             _classService = classService;
         }
 
-        [HttpPost]
+        [HttpPost("AddClass")]
         public IActionResult AddClass(string name)
         {
             Class classs = new Class();
@@ -25,20 +26,20 @@ namespace School.Controllers
             return Ok(_classService.Add(classs));
         }
 
-        [HttpGet]
+        [HttpGet("GetAllClass")]
         public IActionResult GetClass()
         {
             return Ok(_classService.GetAll());
 
         }
 
-        [HttpGet("class/{id}")]
+        [HttpGet("GetClassById/{id}")]
         public IActionResult GetClassById(int id)
         {
             return Ok(_classService.GetById(id));
         }
 
-        [HttpDelete("class/{id}")]
+        [HttpDelete("DeleteClass/{id}")]
         public IActionResult DeleteById(int id)
         {
             return Ok(_classService.Delete(id));

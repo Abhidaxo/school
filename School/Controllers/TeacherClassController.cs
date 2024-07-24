@@ -11,14 +11,14 @@ namespace School.Controllers
     [ApiController]
     public class TeacherClassController : ControllerBase
     {
-        TeacherClassService _teacherClassService;
-        public TeacherClassController(TeacherClassService teacherclassService)
+        ITeacherClassService _teacherClassService;
+        public TeacherClassController(ITeacherClassService teacherclassService)
         {
             _teacherClassService = teacherclassService;
         }
 
 
-        [HttpPost]
+        [HttpPost("AddTeacherClass")]
         public IActionResult AddTeacherClass(int Teacher_Id, int Class_Id)
         {
             TeacherClass teacherClass = new TeacherClass();
@@ -27,19 +27,19 @@ namespace School.Controllers
             return Ok(_teacherClassService.Add(teacherClass));
         }
 
-        [HttpGet]
+        [HttpGet("AddTeacherClass")]
         public IActionResult GetTeacherClass()
         {
             return Ok(_teacherClassService.GetAll());
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("AddTeacherClass/{id}")]
         public IActionResult GetTeacherClassById(int Id)
         {
             return Ok(_teacherClassService.GetById(Id));
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("AddTeacherClass/{id}")]
         public IActionResult DeleteTeacherClass(int Id)
         {
             return Ok(_teacherClassService.Delete(Id));

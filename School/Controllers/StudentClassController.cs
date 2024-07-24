@@ -11,14 +11,14 @@ namespace School.Controllers
     [ApiController]
     public class StudentClassController : ControllerBase
     {
-        StudentClassService _studentClassService;
-        public StudentClassController(StudentClassService studentclassService) 
+        IStudentClassService _studentClassService;
+        public StudentClassController(IStudentClassService studentclassService) 
         { 
             _studentClassService = studentclassService;
         }
 
 
-        [HttpPost]
+        [HttpPost("AddStudentClass")]
         public IActionResult AddStudentClass(int Roll_no ,int Class_Id)
         {
             StudentClass studentClass = new StudentClass();
@@ -27,7 +27,7 @@ namespace School.Controllers
             return Ok(_studentClassService.Add(studentClass));
         }
 
-        [HttpGet]
+        [HttpGet("GetStudentClass")]
         public IActionResult GetStudentClass()
         {
             return Ok(_studentClassService.GetAll());

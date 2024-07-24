@@ -1,21 +1,14 @@
 ﻿using Dapper;
-using Microsoft.Extensions.Configuration;
-using School_DAL.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using School_BL.GeniricInterface;
 
 namespace School_DAL.Database
 {
-    public class GenricSqlRequest<T> : connect
+    public class GenricSqlRequest<T> : connect, IGenericRepositoryService<T> where T : class
     {
         public string _sql { get; set; }
 
        
-        public GenricSqlRequest(string ConnectionString):base(ConnectionString)
+        public GenricSqlRequest()
         {
            
         }

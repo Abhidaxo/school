@@ -8,9 +8,9 @@ using School_BL.GeniricInterface;
 
 namespace School_BL.Services
 {
-    public class ClassService : GenricSqlRequest<Class>
+    public class ClassService : GenricSqlRequest<Class>,IClassService
     {
-        public ClassService(IConfiguration configuration) : base(configuration.GetConnectionString("Defaultconnection"))
+        public ClassService() 
         {
 
         }

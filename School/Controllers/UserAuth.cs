@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using School.UserData;
 using School_BL.Services;
 using School_DAL.Model;
 using System.IdentityModel.Tokens.Jwt;
@@ -34,6 +36,9 @@ namespace School.Controllers
                   signingCredentials: credentials);
 
                 var token = new JwtSecurityTokenHandler().WriteToken(Sectoken);
+
+                userLoginData.UserName = Admin_Id;
+                userLoginData.Password = password;
                 return Ok(token);
             }
             return Unauthorized("Check your id or password");
