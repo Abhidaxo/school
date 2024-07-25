@@ -1,39 +1,37 @@
 ﻿using Dapper;
+using School_BL;
 using School_BL.GeniricInterface;
+using System.Data;
 
 namespace School_DAL.Database
 {
-    public class GenricSqlRequest<T> : connect, IGenericRepositoryService<T> where T : class
+    public class GenricSqlRequest<T> : IGenericRepositoryService<T> where T : class
     {
         public string _sql { get; set; }
 
-       
-        public GenricSqlRequest()
+        IDbConnection _dbConnection;
+        public GenricSqlRequest(IDbConnect dbConnect)
         {
-           
+            _dbConnection = dbConnect.CreateDbConnection();
         }
 
         public List<T> GetAll()
         {
-            using(_connection)
-            {
-
             IEnumerable<T> TableDatas;
             string sql = $"SELECT * FROM {typeof(T).Name}";
-            TableDatas = _connection.Query<T>(sql);
+            TableDatas = _dbConnection.Query<T>(sql);
             return TableDatas.ToList<T>(); 
-            }
         }
 
         public bool Add(T data)
         {
-            using(_connection)
+            using(_dbConnection)
             {
                 string sql = $"INSERT INTO {getTableName()}({getColums()}) VALUES(@{getColumsPros()})";
       
                 try
                 {
-                    int effecteRows = _connection.Execute(sql, data);
+                    int effecteRows = _dbConnection.Execute(sql, data);
                     if (effecteRows > 0)
                         return true;
                     else
@@ -48,24 +46,19 @@ namespace School_DAL.Database
 
         public T GetById(int id)
         {
-            using (_connection)
-            {
                 var protypes = GetPropList();
                 string sql = $"select * from {getTableName()} where {protypes[0]}={id}";
-                T data =  _connection.QueryFirstOrDefault<T>(sql);
+                T data =  _dbConnection.QueryFirstOrDefault<T>(sql);
                 return data;
-            }
         }
 
         public bool Delete(int id)
         {
-            using (_connection)
-            {
                 var protypes = GetPropList();
                 string sql = $"delete from  {getTableName()} where {protypes[0]}={id}";
                 try
                 {
-                    int effectedRows = _connection.Execute(sql);
+                    int effectedRows = _dbConnection.Execute(sql);
                     if(effectedRows > 0) 
                     return true;
                     else
@@ -76,26 +69,18 @@ namespace School_DAL.Database
                     Console.WriteLine(ex.Message);
                     return false;
                 }
-
-            }    
+ 
         }
 
         public List<T> GetAllDatas(string sql)
         {
-            using(_connection)
-            {
-                return _connection.Query<T>(sql).ToList();
-
-            }
-
+                return _dbConnection.Query<T>(sql).ToList();
         }
 
         public T GetData()
         {
-            using (_connection)
-            {
-                return _connection.QueryFirstOrDefault<T>(_sql);
-            }
+
+            return _dbConnection.QueryFirstOrDefault<T>(_sql);
         }
 
         public string getTableName()

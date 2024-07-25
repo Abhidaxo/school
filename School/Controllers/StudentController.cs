@@ -19,30 +19,44 @@ namespace School.Controllers
         }
 
         [HttpPost("AddStudent")]
-        public IActionResult AddStudent(string Name, string place)
+        public IActionResult AddStudent(Student student)
         {
-            Student student = new Student();
-            student.Student_Name = Name;
-            student.Student_Place = place;
-            return Ok(_StudentService.Add(student));
+            //Student student = new Student();
+            //student.Student_Name = Name;
+            //student.Student_Place = place;
+            if (_StudentService.Add(student))
+                return Ok("Scuccessfully added student");
+            else
+                return StatusCode(400);
         }
 
         [HttpGet("GetAllStudent")]
         public IActionResult GetStudent()
         {
-            return Ok(_StudentService.GetAll());
+            var student = _StudentService.GetAll();
+            if (student.Any())
+                return Ok(student);
+            else
+                return StatusCode(400);
         }
 
         [HttpGet("GetByIdStudent/{id}")]
         public IActionResult GetByIdStudent(int id)
         {
-            return Ok(_StudentService.GetById(id));
+            var student = _StudentService.GetById(id);
+            if ( student == null)
+                return StatusCode(404);
+            else
+            return Ok(student);
         }
 
         [HttpDelete("DeleteByIdStudent/{id}")]
         public IActionResult DeleteByIdStudent(int id)
         {
-            return Ok(_StudentService.Delete(id));
+            if (_StudentService.Delete(id))
+                return Ok("Student Deleted");
+            else
+                return StatusCode(400);
         }
     }
 }

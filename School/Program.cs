@@ -5,10 +5,15 @@ using School_Bl.DefaulModules;
 using School.Middleware;
 using School_BL.GeniricInterface;
 using School_BL.Services;
-using School_DAL.Database;
 using School_DAL.Migrations;
 using School_DAL.Model;
 using System.Text;
+using School_BL;
+using System.Data;
+using School.UserData;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
+using School_DAL.Validator;
 
 namespace School
 {
@@ -18,6 +23,7 @@ namespace School
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            LoadStaticVariables();
             // Add services to the container.
 
             builder.Services.AddControllers();
@@ -29,12 +35,15 @@ namespace School
             builder.Services.AddScoped<ITeacherService,TeacherService>();
             builder.Services.AddScoped<IClassService,ClassService>();
             builder.Services.AddScoped<IStudentClassService,StudentClassService>();
-            builder.Services.AddScoped<ITeacherClassService,TeacherClassService>();
+            builder.Services.AddScoped<ITeacherClassService, TeacherClassService>();
+            builder.Services.AddTransient<IDbConnect,DbConnect>();
+            builder.Services.AddScoped<IUserConnectionData,UserConnectionData>();
             builder.Services.AddScoped<JWTTokenCreate>();
             builder.Services.AddScoped<UserAuthService>();
             builder.Services.AddScoped<StudentDetailsService>();
+            builder.Services.AddControllers()
+              .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<StudentValidator>());
 
-            LoadStaticVariables();
             //JWT Token
             var jwtIssuer = builder.Configuration.GetSection("Jwt:Issuer").Get<string>();
             var jwtAudience = builder.Configuration.GetSection("Jwt:Audience").Get<string>();
@@ -87,10 +96,10 @@ namespace School
 
             var app = builder.Build();
 
-            //Create_Migration obj = new Create_Migration(DefaultValues.ConnectionString);
-            //obj.Start_Migration();
+            Create_Migration obj = new Create_Migration(DefaultValues.ConnectionString);
+            obj.Start_Migration();
 
-          //  app.UseMiddleware<loggerMiddleware>();
+            //  app.UseMiddleware<loggerMiddleware>();
             app.UseMiddleware<JWTokenmiddleware>();
 
             // Configure the HTTP request pipeline.

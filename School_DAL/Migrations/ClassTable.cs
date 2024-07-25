@@ -20,6 +20,9 @@ namespace School_DAL.Migrations
             Create.Table("Class")
                .WithColumn("class_Id").AsInt64().PrimaryKey().Identity()
                .WithColumn("Class_name").AsString(100);
+
+
         }
+
     }
 }

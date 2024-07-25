@@ -23,27 +23,44 @@ namespace School.Controllers
         {
             Class classs = new Class();
             classs.Class_Name = name;
-            return Ok(_classService.Add(classs));
+            if (_classService.Add(classs))
+                return StatusCode(201, "Class successfully added");
+            else
+                return StatusCode(400, "Something went Wrong");
         }
 
         [HttpGet("GetAllClass")]
         public IActionResult GetClass()
         {
+            try
+            {
+            return StatusCode(200,_classService.GetAll());
 
-            return Ok(_classService.GetAll());
+            }catch(Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
 
         }
 
         [HttpGet("GetClassById/{id}")]
         public IActionResult GetClassById(int id)
         {
-            return Ok(_classService.GetById(id));
+            var classs = _classService.GetById(id);
+            if (classs == null)
+                return StatusCode(404);
+            else
+                return StatusCode(200,classs);
         }
 
         [HttpDelete("DeleteClass/{id}")]
         public IActionResult DeleteById(int id)
         {
-            return Ok(_classService.Delete(id));
+            if (_classService.Delete(id))
+                return StatusCode(200, _classService.Delete(id));
+            else
+
+                return StatusCode(400);
         }
     }
 }

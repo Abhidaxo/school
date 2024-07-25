@@ -16,7 +16,7 @@ namespace School_BL.Services
 
         
 
-        public TeacherClassService() 
+        public TeacherClassService(IDbConnect dbConnect) : base(dbConnect)
         {
 
         }

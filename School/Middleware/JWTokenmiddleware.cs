@@ -12,7 +12,7 @@ namespace School.Middleware
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext context)
+        public async Task InvokeAsync(HttpContext context,IServiceProvider serviceProvider)
         {
             var tokens = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 
@@ -24,11 +24,12 @@ namespace School.Middleware
 
                 if (jwtTokens != null)
                 {
-                   
-                    userLoginData.username = jwtTokens.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
-                    userLoginData.Iss = jwtTokens.Claims.FirstOrDefault(c => c.Type == "iss")?.Value;
-                    userLoginData.Aud = jwtTokens.Claims.FirstOrDefault(c => c.Type == "aud")?.Value;
-                    userLoginData.exp = jwtTokens.Claims.FirstOrDefault(c => c.Type == "exp")?.Value;
+                    var scope = context.RequestServices.GetService<IUserConnectionData>();
+
+                    scope.username = jwtTokens.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+                    scope.Iss = jwtTokens.Claims.FirstOrDefault(c => c.Type == "iss")?.Value;
+                    scope.Aud = jwtTokens.Claims.FirstOrDefault(c => c.Type == "aud")?.Value;
+                    scope.exp = jwtTokens.Claims.FirstOrDefault(c => c.Type == "exp")?.Value;
                     var exptime = jwtTokens.Claims.FirstOrDefault(c => c.Type == "exp")?.Value;
                     if (long.TryParse(exptime, out var exp))
                     {

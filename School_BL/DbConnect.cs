@@ -1,14 +1,20 @@
 ﻿using MySql.Data.MySqlClient;
 using School_Bl.DefaulModules;
 using School_BL.GeniricInterface;
-namespace School_DAL.Database
+using System.Data;
+namespace School_BL
 {
-    public class connect
+    public class DbConnect : IDbConnect
     {
         public MySqlConnection _connection;
-        public connect()
+        public DbConnect()
         {
             _connection = new MySqlConnection(DefaultValues.ConnectionString);
+        }
+
+        public IDbConnection CreateDbConnection()
+        {
+            return _connection;
         }
     }
 }

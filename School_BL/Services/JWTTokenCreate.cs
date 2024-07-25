@@ -27,7 +27,7 @@ namespace School_BL.Services
                 {
                     new Claim(JwtRegisteredClaimNames.Sub, username),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(ClaimTypes.NameIdentifier, username)
+                    new Claim(ClaimTypes.Role, username)
                 };
 
             var Sectoken = new JwtSecurityToken(_configuration["Jwt:Issuer"],

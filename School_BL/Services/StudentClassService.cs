@@ -13,7 +13,7 @@ namespace School_BL.Services
     public class StudentClassService : GenricSqlRequest<StudentClass>,IStudentClassService
     {
 
-        public StudentClassService() 
+        public StudentClassService(IDbConnect dbConnect) : base(dbConnect)
         {
           
         }

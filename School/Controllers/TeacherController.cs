@@ -25,12 +25,16 @@ namespace School.Controllers
             Teacher teacher = new Teacher();
             teacher.Teacher_Name = name;
             teacher.Teacher_Subject = subject;
-            return Ok(new{ Success= _teacherService.Add(teacher),data=teacher});
+            if (_teacherService.Add(teacher))
+                 return StatusCode(200);
+            else
+                 return StatusCode(400);
         }
 
         [HttpGet("GetTeacherClass")] 
         public IActionResult GetTecher()
         {
+          
             return Ok(_teacherService.GetAll());    
         }
 

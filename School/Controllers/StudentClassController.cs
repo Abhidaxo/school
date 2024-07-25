@@ -26,32 +26,42 @@ namespace School.Controllers
             StudentClass studentClass = new StudentClass();
             studentClass.Roll_No = Roll_no;
             studentClass.Class_Id = Class_Id;
-            return Ok(_studentClassService.Add(studentClass));
+            if (_studentClassService.Add(studentClass))
+                return StatusCode(200);
+            else
+                return StatusCode(400);
         }
 
         [HttpGet("GetStudentClass")]
         public IActionResult GetStudentClass()
         {
-            return Ok(_studentClassService.GetAll());
+            var stud = (_studentClassService.GetAll());
+            if (stud.Any())
+                return StatusCode(200,stud);
+            else
+                return StatusCode(400);
+
         }
 
         [HttpGet("{id}")]
         public IActionResult GetStudentClassById(int Id)
         {
-            var students = _serviceProvider.GetService<IStudentService>();
-            var classs  = _serviceProvider.GetService<IClassService>();
+            var id = (_studentClassService.GetById(Id));
 
-            var result = new 
-            {
-
-            };
-            return Ok(_studentClassService.GetById(Id));
+            if (id == null)
+                return StatusCode(400);
+            else
+                return StatusCode(200, id);
         }
 
         [HttpDelete("{id}")]
         public IActionResult DeleteStudentClass(int Id)
         {
-            return Ok(_studentClassService.Delete(Id));
+            if (_studentClassService.Delete(Id))
+                return StatusCode(200,_studentClassService.Delete(Id));
+            else
+                return StatusCode(400);
+
         }
     }
 }

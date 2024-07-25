@@ -24,25 +24,42 @@ namespace School.Controllers
             TeacherClass teacherClass = new TeacherClass();
             teacherClass.Teacher_Id = Teacher_Id;
             teacherClass.Class_Id = Class_Id;
-            return Ok(_teacherClassService.Add(teacherClass));
+            if (_teacherClassService.Add(teacherClass))
+                return Ok("Successfully added");
+            else
+                return BadRequest();
         }
 
-        [HttpGet("AddTeacherClass")]
+        [HttpGet("GetAllTeacherClass")]
         public IActionResult GetTeacherClass()
         {
+            try
+            {
             return Ok(_teacherClassService.GetAll());
+
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        [HttpGet("AddTeacherClass/{id}")]
+        [HttpGet("GetTeacherClassById/{id}")]
         public IActionResult GetTeacherClassById(int Id)
         {
-            return Ok(_teacherClassService.GetById(Id));
+            var teacher = (_teacherClassService.GetById(Id));
+            if( teacher== null)
+             return StatusCode(400);
+            else
+             return Ok(teacher);
         }
 
-        [HttpDelete("AddTeacherClass/{id}")]
+        [HttpDelete("DeleteTeacherClassById/{id}")]
         public IActionResult DeleteTeacherClass(int Id)
         {
-            return Ok(_teacherClassService.Delete(Id));
+            if (_teacherClassService.Delete(Id))
+                return Ok(_teacherClassService.Delete(Id));
+            else
+                return StatusCode(400);
         }
     }
 }
