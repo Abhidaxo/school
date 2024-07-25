@@ -6,6 +6,7 @@ using School.UserData;
 using School_BL.Services;
 using School_DAL.Model;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 
 namespace School.Controllers
@@ -15,7 +16,7 @@ namespace School.Controllers
     public class UserAuth : ControllerBase
     {
         [HttpPost]
-        public IActionResult Login(IConfiguration configuration, UserAuthService userAuth, string Admin_Id,string password)
+        public IActionResult Login(JWTTokenCreate tokenCreate, UserAuthService userAuth, string Admin_Id,string password)
         {
             
             
@@ -26,20 +27,7 @@ namespace School.Controllers
             }
             else if(password == admin.Password && admin.Admin_Id ==  Admin_Id)
             {
-                var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
-                var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-                var Sectoken = new JwtSecurityToken(configuration["Jwt:Issuer"],
-                  configuration["Jwt:Audience"],
-                  null,
-                  expires: DateTime.UtcNow.AddMinutes(3),
-                  signingCredentials: credentials);
-
-                var token = new JwtSecurityTokenHandler().WriteToken(Sectoken);
-
-                userLoginData.UserName = Admin_Id;
-                userLoginData.Password = password;
-                return Ok(token);
+                return Ok(tokenCreate.CreateJWTToken(Admin_Id));
             }
             return Unauthorized("Check your id or password");
         }

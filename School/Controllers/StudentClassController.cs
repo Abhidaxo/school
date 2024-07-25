@@ -12,9 +12,11 @@ namespace School.Controllers
     public class StudentClassController : ControllerBase
     {
         IStudentClassService _studentClassService;
-        public StudentClassController(IStudentClassService studentclassService) 
+        IServiceProvider _serviceProvider;
+        public StudentClassController(IStudentClassService studentclassService,IServiceProvider serviceProvider) 
         { 
             _studentClassService = studentclassService;
+            _serviceProvider = serviceProvider;
         }
 
 
@@ -36,6 +38,13 @@ namespace School.Controllers
         [HttpGet("{id}")]
         public IActionResult GetStudentClassById(int Id)
         {
+            var students = _serviceProvider.GetService<IStudentService>();
+            var classs  = _serviceProvider.GetService<IClassService>();
+
+            var result = new 
+            {
+
+            };
             return Ok(_studentClassService.GetById(Id));
         }
 

@@ -1,4 +1,5 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using School.UserData;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace School.Middleware
 {
@@ -23,6 +24,11 @@ namespace School.Middleware
 
                 if (jwtTokens != null)
                 {
+                   
+                    userLoginData.username = jwtTokens.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+                    userLoginData.Iss = jwtTokens.Claims.FirstOrDefault(c => c.Type == "iss")?.Value;
+                    userLoginData.Aud = jwtTokens.Claims.FirstOrDefault(c => c.Type == "aud")?.Value;
+                    userLoginData.exp = jwtTokens.Claims.FirstOrDefault(c => c.Type == "exp")?.Value;
                     var exptime = jwtTokens.Claims.FirstOrDefault(c => c.Type == "exp")?.Value;
                     if (long.TryParse(exptime, out var exp))
                     {

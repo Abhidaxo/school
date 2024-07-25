@@ -30,6 +30,7 @@ namespace School
             builder.Services.AddScoped<IClassService,ClassService>();
             builder.Services.AddScoped<IStudentClassService,StudentClassService>();
             builder.Services.AddScoped<ITeacherClassService,TeacherClassService>();
+            builder.Services.AddScoped<JWTTokenCreate>();
             builder.Services.AddScoped<UserAuthService>();
             builder.Services.AddScoped<StudentDetailsService>();
 

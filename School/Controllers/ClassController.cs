@@ -29,6 +29,7 @@ namespace School.Controllers
         [HttpGet("GetAllClass")]
         public IActionResult GetClass()
         {
+
             return Ok(_classService.GetAll());
 
         }
