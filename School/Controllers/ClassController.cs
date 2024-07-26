@@ -14,9 +14,9 @@ namespace School.Controllers
     [ApiController]
     public class ClassController : ControllerBase
     {
-        private readonly IDbResponse _dbResponse;
+        IDbResponse _dbResponse;
 
-        IMapper mapper;
+        IMapper _mapper;
 
         IClassService _classService;
         ILifetimeScope Scope { get; set; }
@@ -26,6 +26,7 @@ namespace School.Controllers
             _classService = classService;
             Scope = userConnectionData.Scope;
             _dbResponse = dbResponse;
+            _mapper = mapper;   
         }
 
         [HttpPost("AddClass")]
@@ -48,6 +49,7 @@ namespace School.Controllers
         {
             using(Scope.BeginLifetimeScope())
             {
+
                 var teacher = Scope.Resolve<ITeacherService>();
                 return Ok(teacher.GetAll());
             }
@@ -56,12 +58,12 @@ namespace School.Controllers
         [HttpGet("GetAllClass")]
         public IActionResult GetClass()
         {
-            var Stud = _classService.GetAll().Select(u=>u.Class_Id);
+            var Stud = _classService.GetAll().Select(x => _mapper.Map<Class>(x));
             try
             {
                 _dbResponse.Status = true;
                 _dbResponse.Message = "Request Successfully";
-                _dbResponse.Data = _classService.GetAll();
+                _dbResponse.Data = Stud;
                 return Ok(_dbResponse);
 
             }

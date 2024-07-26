@@ -1,7 +1,9 @@
-﻿using AutoMapper;
+﻿using Autofac;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using School.UserData;
 using School_BL.GeniricInterface;
 using School_BL.Services;
 using School_DAL.Database;
@@ -15,18 +17,20 @@ namespace School.Controllers
     public class TeacherController : ControllerBase
     {
         ITeacherService _teacherService;
+        ILifetimeScope Scope;
 
         IMapper _mapper;
-        public TeacherController(ITeacherService teacherService , IMapper mapper)
+        public TeacherController(ITeacherService teacherService , IMapper mapper,IUserConnectionData userConnection)
         {
             _teacherService = teacherService;
             _mapper = mapper;
+            Scope = userConnection.Scope;
         }
 
         [HttpPost("AddTeacherClass")]
         public IActionResult AddTecher(Teacher teacher)
         {
-            
+
             if (_teacherService.Add(teacher))
                  return StatusCode(200);
             else

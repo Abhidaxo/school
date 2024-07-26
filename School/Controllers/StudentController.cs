@@ -7,6 +7,8 @@ using School_DAL.Model;
 using School_BL.Services;
 using School.ViewModel;
 using AutoMapper;
+using System.Data;
+using School.Response;
 
 namespace School.Controllers
 {
@@ -14,21 +16,31 @@ namespace School.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        private readonly IMapper _mapper;
+        IMapper _mapper;
+
+        IDbResponse _dbResponse;
+
 
         IStudentService _StudentService;
-        public StudentController(IStudentService studentService , IMapper mapper) 
+        public StudentController(IStudentService studentService , IMapper mapper , IDbResponse dbResponse) 
         {
             _StudentService = studentService;
             _mapper = mapper;
+            _dbResponse = dbResponse;
         }
 
         [HttpPost("AddStudent")]
         public IActionResult AddStudent(Student student)
         {
-           
+
+
             if (_StudentService.Add(student))
-                return Ok("Scuccessfully added student");
+            {
+                _dbResponse.Status = true;
+                _dbResponse.Message = "Scuccessfully added student";
+                return Ok(_dbResponse);
+
+            }
             else
                 return StatusCode(400);
         }

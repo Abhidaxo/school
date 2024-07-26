@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Autofac;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using School.UserData;
 using School_BL.GeniricInterface;
 using School_BL.Services;
 using School_DAL.Database;
@@ -11,23 +13,37 @@ namespace School.Controllers
     [ApiController]
     public class TeacherClassController : ControllerBase
     {
+        ILifetimeScope Scope;
         ITeacherClassService _teacherClassService;
-        public TeacherClassController(ITeacherClassService teacherclassService)
+        public TeacherClassController(ITeacherClassService teacherclassService,IUserConnectionData userConnection)
         {
             _teacherClassService = teacherclassService;
+            Scope = userConnection.Scope;
         }
 
 
         [HttpPost("AddTeacherClass")]
         public IActionResult AddTeacherClass(int Teacher_Id, int Class_Id)
         {
-            TeacherClass teacherClass = new TeacherClass();
-            teacherClass.Teacher_Id = Teacher_Id;
-            teacherClass.Class_Id = Class_Id;
-            if (_teacherClassService.Add(teacherClass))
-                return Ok("Successfully added");
-            else
-                return BadRequest();
+            using (Scope.BeginLifetimeScope())
+            {
+                var teacheService = Scope.Resolve<ITeacherService>();
+                var ClassService = Scope.Resolve<IClassService>();
+                bool hasTeacher = teacheService.GetById(Teacher_Id)!=null;
+                bool hasClass = ClassService.GetById(Class_Id)!=null;
+                if (hasTeacher && hasClass)
+                {
+                    TeacherClass teacherClass = new TeacherClass();
+                    teacherClass.Teacher_Id = Teacher_Id;
+                    teacherClass.Class_Id = Class_Id;
+                    if (_teacherClassService.Add(teacherClass))
+                        return Ok("Successfully added");
+                    else
+                        return BadRequest();
+                }
+                else
+                return BadRequest("There is no teacher or class for given id");
+            }
         }
 
         [HttpGet("GetAllTeacherClass")]

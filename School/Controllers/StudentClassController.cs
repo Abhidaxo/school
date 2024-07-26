@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Autofac;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Writers;
+using School.UserData;
 using School_BL.GeniricInterface;
 using School_BL.Services;
 using School_DAL.Database;
@@ -13,23 +16,39 @@ namespace School.Controllers
     {
         IStudentClassService _studentClassService;
         IServiceProvider _serviceProvider;
-        public StudentClassController(IStudentClassService studentclassService,IServiceProvider serviceProvider) 
+        ILifetimeScope _lifetimeScope;
+        public StudentClassController(IStudentClassService studentclassService,IServiceProvider serviceProvider,IUserConnectionData userConnection) 
         { 
             _studentClassService = studentclassService;
             _serviceProvider = serviceProvider;
+            _lifetimeScope = userConnection.Scope;
         }
 
 
         [HttpPost("AddStudentClass")]
         public IActionResult AddStudentClass(int Roll_no ,int Class_Id)
         {
-            StudentClass studentClass = new StudentClass();
-            studentClass.Roll_No = Roll_no;
-            studentClass.Class_Id = Class_Id;
-            if (_studentClassService.Add(studentClass))
-                return StatusCode(200);
-            else
-                return StatusCode(400);
+            using (_lifetimeScope.BeginLifetimeScope())
+            {
+                var StudentService = _lifetimeScope.Resolve<IStudentService>();
+                var ClassServive = _lifetimeScope.Resolve<IClassService>();
+                bool stu = StudentService.GetById(Class_Id) != null;
+                bool cls = ClassServive.GetById(Class_Id) != null;
+                if (stu && cls)
+                {
+                    StudentClass studentClass = new StudentClass();
+                    studentClass.Roll_No = Roll_no;
+                    studentClass.Class_Id = Class_Id;
+
+                    if (_studentClassService.Add(studentClass))
+                        return StatusCode(200);
+                    else
+                        return StatusCode(400);
+                }
+                else
+                    return BadRequest("There is no class or student in this id ");
+            }
+                
         }
 
         [HttpGet("GetStudentClass")]
