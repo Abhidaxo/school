@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Configuration;
+using School.UserData;
 using School_DAL.Database;
 using School_DAL.Model;
 using System;
@@ -13,7 +14,7 @@ namespace School_BL.Services
 {
     public class StudentDetailsService : GenricSqlRequest<dynamic>
     {
-        public StudentDetailsService(IDbConnect dbConnect) : base(dbConnect) 
+        public StudentDetailsService(IUserConnectionData dbConnect) : base(dbConnect) 
         {
         }
         public List<dynamic> getStudentDetails()

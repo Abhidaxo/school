@@ -6,7 +6,7 @@ namespace School_BL
 {
     public class DbConnect : IDbConnect
     {
-        public MySqlConnection _connection;
+        public IDbConnection _connection;
         public DbConnect()
         {
             _connection = new MySqlConnection(DefaultValues.ConnectionString);

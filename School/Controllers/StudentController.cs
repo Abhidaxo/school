@@ -5,6 +5,8 @@ using School_BL.GeniricInterface;
 using School_DAL.Database;
 using School_DAL.Model;
 using School_BL.Services;
+using School.ViewModel;
+using AutoMapper;
 
 namespace School.Controllers
 {
@@ -12,18 +14,19 @@ namespace School.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
+        private readonly IMapper _mapper;
+
         IStudentService _StudentService;
-        public StudentController(IStudentService studentService) 
+        public StudentController(IStudentService studentService , IMapper mapper) 
         {
             _StudentService = studentService;
+            _mapper = mapper;
         }
 
         [HttpPost("AddStudent")]
         public IActionResult AddStudent(Student student)
         {
-            //Student student = new Student();
-            //student.Student_Name = Name;
-            //student.Student_Place = place;
+           
             if (_StudentService.Add(student))
                 return Ok("Scuccessfully added student");
             else
@@ -33,9 +36,9 @@ namespace School.Controllers
         [HttpGet("GetAllStudent")]
         public IActionResult GetStudent()
         {
-            var student = _StudentService.GetAll();
-            if (student.Any())
-                return Ok(student);
+            var students = _StudentService.GetAll().Select(u=> _mapper.Map<Student>(u));
+            if (students !=null)
+                return Ok(students);
             else
                 return StatusCode(400);
         }

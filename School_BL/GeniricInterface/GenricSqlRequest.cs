@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using School.UserData;
 using School_BL;
 using School_BL.GeniricInterface;
 using System.Data;
@@ -9,10 +10,11 @@ namespace School_DAL.Database
     {
         public string _sql { get; set; }
 
+
         IDbConnection _dbConnection;
-        public GenricSqlRequest(IDbConnect dbConnect)
+        public GenricSqlRequest(IUserConnectionData dbConnect)
         {
-            _dbConnection = dbConnect.CreateDbConnection();
+            _dbConnection = dbConnect.Connection;
         }
 
         public List<T> GetAll()

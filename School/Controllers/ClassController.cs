@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Autofac;
+using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using School.Response;
 using School.UserData;
 using School_BL.GeniricInterface;
 using School_BL.Services;
@@ -11,32 +14,58 @@ namespace School.Controllers
     [ApiController]
     public class ClassController : ControllerBase
     {
-        IClassService _classService;
+        private readonly IDbResponse _dbResponse;
 
-        public ClassController(IClassService classService)
+        IMapper mapper;
+
+        IClassService _classService;
+        ILifetimeScope Scope { get; set; }
+
+        public ClassController(IClassService classService,IUserConnectionData userConnectionData,IDbResponse dbResponse ,IMapper mapper)
         {
             _classService = classService;
+            Scope = userConnectionData.Scope;
+            _dbResponse = dbResponse;
         }
 
         [HttpPost("AddClass")]
-        public IActionResult AddClass(string name)
+        public IActionResult AddClass(Class classs)
         {
-            Class classs = new Class();
-            classs.Class_Name = name;
+            
             if (_classService.Add(classs))
-                return StatusCode(201, "Class successfully added");
+            {
+                _dbResponse.Status = true;
+                _dbResponse.Message = "Class successfully added";
+
+                return Ok(_dbResponse);
+            }
             else
                 return StatusCode(400, "Something went Wrong");
+        }
+        //Example for ILifeTimeScrope
+        [HttpGet("GetAll")]
+        public IActionResult GetAllData()
+        {
+            using(Scope.BeginLifetimeScope())
+            {
+                var teacher = Scope.Resolve<ITeacherService>();
+                return Ok(teacher.GetAll());
+            }
         }
 
         [HttpGet("GetAllClass")]
         public IActionResult GetClass()
         {
+            var Stud = _classService.GetAll().Select(u=>u.Class_Id);
             try
             {
-            return StatusCode(200,_classService.GetAll());
+                _dbResponse.Status = true;
+                _dbResponse.Message = "Request Successfully";
+                _dbResponse.Data = _classService.GetAll();
+                return Ok(_dbResponse);
 
-            }catch(Exception ex)
+            }
+            catch(Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }

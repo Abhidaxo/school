@@ -6,12 +6,13 @@ using School_DAL.Model;
 using System.Configuration;
 using School_BL.GeniricInterface;
 using System.Data;
+using School.UserData;
 
 namespace School_BL.Services
 {
     public class ClassService : GenricSqlRequest<Class>,IClassService
     {
-        public ClassService(IDbConnect dbConnect) : base(dbConnect) 
+        public ClassService(IUserConnectionData dbConnect) : base(dbConnect) 
         {
 
         }

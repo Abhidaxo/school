@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using School_BL.GeniricInterface;
@@ -14,17 +15,18 @@ namespace School.Controllers
     public class TeacherController : ControllerBase
     {
         ITeacherService _teacherService;
-        public TeacherController(ITeacherService teacherService)
+
+        IMapper _mapper;
+        public TeacherController(ITeacherService teacherService , IMapper mapper)
         {
             _teacherService = teacherService;
+            _mapper = mapper;
         }
 
         [HttpPost("AddTeacherClass")]
-        public IActionResult AddTecher(string name,string subject)
+        public IActionResult AddTecher(Teacher teacher)
         {
-            Teacher teacher = new Teacher();
-            teacher.Teacher_Name = name;
-            teacher.Teacher_Subject = subject;
+            
             if (_teacherService.Add(teacher))
                  return StatusCode(200);
             else
@@ -34,8 +36,9 @@ namespace School.Controllers
         [HttpGet("GetTeacherClass")] 
         public IActionResult GetTecher()
         {
+            var tchr = _teacherService.GetAll().Select(x => _mapper.Map<Teacher>(x)).ToList();
           
-            return Ok(_teacherService.GetAll());    
+            return Ok(tchr);    
         }
 
         [HttpGet("GetTecherById/{id}")]

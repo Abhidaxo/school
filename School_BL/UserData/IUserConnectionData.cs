@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using Autofac;
+using System.Data;
 
 namespace School.UserData
 {
@@ -13,5 +14,7 @@ namespace School.UserData
         public string Iss { get; set; }
 
         public string exp { get; set; }
+
+        public ILifetimeScope Scope { get; set; }
     }
 }

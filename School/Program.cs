@@ -14,6 +14,10 @@ using School.UserData;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using School_DAL.Validator;
+using Autofac;
+using Microsoft.AspNetCore.SignalR;
+using Autofac.Extensions.DependencyInjection;
+using School.Response;
 
 namespace School
 {
@@ -27,22 +31,33 @@ namespace School
             // Add services to the container.
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+            builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
+            {
+                containerBuilder.RegisterType<UserConnectionData>().As<IUserConnectionData>().InstancePerLifetimeScope();
+            });
+
 
             builder.Services.AddScoped<IStudentService,StudentService>();
             builder.Services.AddScoped<ITeacherService,TeacherService>();
             builder.Services.AddScoped<IClassService,ClassService>();
             builder.Services.AddScoped<IStudentClassService,StudentClassService>();
             builder.Services.AddScoped<ITeacherClassService, TeacherClassService>();
-            builder.Services.AddTransient<IDbConnect,DbConnect>();
-            builder.Services.AddScoped<IUserConnectionData,UserConnectionData>();
+            builder.Services.AddScoped<IDbConnection>(c=>new DbConnect()._connection);
+            builder.Services.AddScoped<IDbResponse,DbResponse>();
+            builder.Services.AddAutoMapper(typeof(Mapper));
             builder.Services.AddScoped<JWTTokenCreate>();
             builder.Services.AddScoped<UserAuthService>();
             builder.Services.AddScoped<StudentDetailsService>();
             builder.Services.AddControllers()
               .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<StudentValidator>());
+            builder.Services.AddControllers()
+              .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<TeacherValidator>());
+            builder.Services.AddControllers()
+              .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ClassValidator>());
 
             //JWT Token
             var jwtIssuer = builder.Configuration.GetSection("Jwt:Issuer").Get<string>();
@@ -96,8 +111,8 @@ namespace School
 
             var app = builder.Build();
 
-            Create_Migration obj = new Create_Migration(DefaultValues.ConnectionString);
-            obj.Start_Migration();
+            //Create_Migration obj = new Create_Migration(DefaultValues.ConnectionString);
+            //obj.Start_Migration();
 
             //  app.UseMiddleware<loggerMiddleware>();
             app.UseMiddleware<JWTokenmiddleware>();
