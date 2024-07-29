@@ -6,7 +6,8 @@ namespace School.UserData
     public class UserConnectionData : IUserConnectionData
     {
         private IDbConnection _connection;
-        public UserConnectionData(IDbConnection dbConnection,ILifetimeScope scope) {
+        public UserConnectionData(IDbConnection dbConnection, ILifetimeScope scope)
+        {
             _connection = dbConnection;
             this.Scope = scope;
         }

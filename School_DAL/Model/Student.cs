@@ -9,10 +9,7 @@ namespace School_DAL.Model
     public  class Student
     {
         public int Roll_No { get; set; }
-
-        public string Student_Name { get; set; }   
-        
-        public string Student_Place { get; set; }
-
+        public string? Student_Name { get; set; }   
+        public string? Student_Place { get; set; }
     }
 }

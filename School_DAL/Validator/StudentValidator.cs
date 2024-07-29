@@ -14,12 +14,7 @@ namespace School_DAL.Validator
        public StudentValidator() {
             RuleFor(c => c.Student_Name).NotEmpty()
                         .WithMessage(" Name is Required");
-
             RuleFor(x => x.Student_Name).Length(4, 50).WithMessage("Name must atleste 4 letters");
-
         }
-
-       
-       
     }
 }

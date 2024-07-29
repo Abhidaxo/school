@@ -18,6 +18,8 @@ using Autofac;
 using Microsoft.AspNetCore.SignalR;
 using Autofac.Extensions.DependencyInjection;
 using School.Response;
+using Autofac.Core;
+using FluentValidation;
 
 namespace School
 {
@@ -46,18 +48,16 @@ namespace School
             builder.Services.AddScoped<IClassService,ClassService>();
             builder.Services.AddScoped<IStudentClassService,StudentClassService>();
             builder.Services.AddScoped<ITeacherClassService, TeacherClassService>();
-            builder.Services.AddScoped<IDbConnection>(c=>new DbConnect()._connection);
+            builder.Services.AddScoped<IDbConnection>(c=>new DbConnect(DefaultValues.ConnectionString)._connection);
             builder.Services.AddScoped<IDbResponse,DbResponse>();
             builder.Services.AddAutoMapper(typeof(Mapper));
             builder.Services.AddScoped<JWTTokenCreate>();
             builder.Services.AddScoped<UserAuthService>();
             builder.Services.AddScoped<StudentDetailsService>();
-            builder.Services.AddControllers()
-              .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<StudentValidator>());
-            builder.Services.AddControllers()
-              .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<TeacherValidator>());
-            builder.Services.AddControllers()
-              .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ClassValidator>());
+
+            builder.Services.AddFluentValidationAutoValidation();
+            builder.Services.AddFluentValidationClientsideAdapters();
+            builder.Services.AddValidatorsFromAssemblyContaining<StudentValidator>();
 
             //JWT Token
             var jwtIssuer = builder.Configuration.GetSection("Jwt:Issuer").Get<string>();
@@ -137,7 +137,7 @@ namespace School
 
         private static void LoadStaticVariables()
         {
-            var MyConfig = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            IConfigurationRoot MyConfig = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
             DefaultValues.ConnectionString = MyConfig.GetValue<string>("ConnectionStrings:Defaultconnection");
 
         }

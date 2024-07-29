@@ -10,7 +10,6 @@ namespace School_DAL.Model
     {
         public int TeacherClass_Id { get; set; }
         public int Teacher_Id { get; set; }
-
         public int Class_Id { get; set; }
     }
 }

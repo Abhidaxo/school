@@ -10,9 +10,6 @@ namespace School_DAL.Model
     {
         public int StudentClass_Id { get; set; }
         public int Roll_No { get; set; }
-
         public int Class_Id { get; set;}
-
-
     }
 }

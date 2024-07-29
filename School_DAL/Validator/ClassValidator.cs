@@ -13,7 +13,6 @@ namespace School_DAL.Validator
         public ClassValidator() 
         {
             RuleFor(x => x.Class_Name).NotEmpty().WithMessage(" Class is Required");
-
         
         }
     }

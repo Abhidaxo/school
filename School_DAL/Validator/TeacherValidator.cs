@@ -14,9 +14,7 @@ namespace School_DAL.Validator
         {
             RuleFor(c => c.Teacher_Name).NotEmpty()
                         .WithMessage(" Name is Required");
-
             RuleFor(x => x.Teacher_Name).Length(4, 50).WithMessage("Name must atleste 4 letters");
-
         }
     }
 }

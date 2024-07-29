@@ -18,18 +18,25 @@ namespace School.Controllers
         [HttpPost]
         public IActionResult Login(JWTTokenCreate tokenCreate, UserAuthService userAuth, string Admin_Id,string password)
         {
-            
-            
-             Admin admin = userAuth.GetUser(Admin_Id);
-            if(admin == null )
+            try
             {
-                return Unauthorized("No user found");
+                Admin admin = userAuth.GetUser(Admin_Id);
+                if (admin == null)
+                {
+                    return Unauthorized("No user found");
+                }
+                else if (password == admin.Password && admin.Admin_Id == Admin_Id)
+                {
+                    return Ok(tokenCreate.CreateJWTToken(Admin_Id));
+                }
+                return Unauthorized("Check your id or password");
+
             }
-            else if(password == admin.Password && admin.Admin_Id ==  Admin_Id)
+            catch(Exception ex) 
             {
-                return Ok(tokenCreate.CreateJWTToken(Admin_Id));
-            }
-            return Unauthorized("Check your id or password");
+                return StatusCode(500,ex.Message);
+            }       
+             
         }
 
     }

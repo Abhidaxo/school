@@ -48,7 +48,7 @@ namespace School.Controllers
         [HttpGet("GetAllStudent")]
         public IActionResult GetStudent()
         {
-            var students = _StudentService.GetAll().Select(u=> _mapper.Map<Student>(u));
+            var students = _StudentService.GetAll().Select(u=> _mapper.Map<StudentViewModel>(u));
             if (students !=null)
                 return Ok(students);
             else

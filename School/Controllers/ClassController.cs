@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using School.Response;
 using School.UserData;
+using School.ViewModel;
 using School_BL.GeniricInterface;
 using School_BL.Services;
 using School_DAL.Database;
@@ -26,8 +27,10 @@ namespace School.Controllers
             _classService = classService;
             Scope = userConnectionData.Scope;
             _dbResponse = dbResponse;
-            _mapper = mapper;   
+            _mapper = mapper; 
+            
         }
+
 
         [HttpPost("AddClass")]
         public IActionResult AddClass(Class classs)
@@ -58,7 +61,7 @@ namespace School.Controllers
         [HttpGet("GetAllClass")]
         public IActionResult GetClass()
         {
-            var Stud = _classService.GetAll().Select(x => _mapper.Map<Class>(x));
+            var Stud = _classService.GetAll();
             try
             {
                 _dbResponse.Status = true;
